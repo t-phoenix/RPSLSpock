@@ -29,16 +29,13 @@ export default function Home() {
             <b>Step1:</b> Player1 Start the Game
           </p>
           <p>
-            <b>Step2:</b> Player1 tell Contract Address to selected Player2
+            <b>Step2:</b> Player1 secure their move and salt carefully
           </p>
           <p>
-            <b>Step3:</b> Player1 secure their move and salt carefully
+            <b>Step3:</b> Player2 plays the move with same bet amount
           </p>
           <p>
-            <b>Step4:</b> Player2 plays the move with same bet amount
-          </p>
-          <p>
-            <b>Step5:</b> Player1 SOLVE by revealing their move and salt
+            <b>Step4:</b> Player1 SOLVE by revealing their move and salt
           </p>
 
           <div

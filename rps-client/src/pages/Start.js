@@ -87,10 +87,10 @@ export default function Start(){
         <div className="main-content">
             <h1>How to Play?</h1>
             <div className="instruction-box">
-                <p><b>Step1:</b> Choose a Move (Rock, Paper, Scissor, Lizard, Spock)</p>
+                <p><b>Step1:</b> Choose a Move (Rock, Paper, Scissors, Lizard, Spock)</p>
                 <p><b>Step2:</b> Choose opponent (address)</p>
                 <p><b>Step3:</b> Choose value to bet (ether)</p>
-                <p><b>Step4:</b> Choose a random number (SALT) to hash Player1's move</p>
+                <p><b>Step4:</b> Save your SALT and Move, will need to solve the Game</p>
                 <p><b>Step5:</b> Deploy Contract by sending Transaction</p>
             </div>
 

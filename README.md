@@ -35,7 +35,7 @@ Once Player2 is done with his/her move, Player1 reveals his Move and Secret Key,
 ## Mixed Strategy Nash Equilibria of this Game
 
 A "Nash Equilibrium" is a stable strategy for a game in which "Neither player has an incentive to unilaterally move away from its choices in the pair of strategies.
-If bth move at the same time, they could benefit, but neither wants to do that alone.
+If both move at the same time, they could benefit, but neither wants to do that alone.
 
 Rock Paper Scissor Lizard Spock payout graph
 
