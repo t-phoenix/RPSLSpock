@@ -33,3 +33,30 @@ Player1 HODL private key as SALT, which is paired with it's counterpart public k
 Once Player2 is done with his/her move, Player1 reveals his Move and Secret Key, and the final result is calculated and payout is distributed.
 
 ## Mixed Strategy Nash Equilibria of this Game
+
+A "Nash Equilibrium" is a stable strategy for a game in which "Neither player has an incentive to unilaterally move away from its choices in the pair of strategies.
+If bth move at the same time, they could benefit, but neither wants to do that alone.
+
+Rock Paper Scissor Lizard Spock payout graph
+
+- '+' means that 'row' player "beats"
+- '-' means that 'row' player is beaten
+- 'o' means tie
+  ![Payout Graph](./NashRPSLS.jpg)
+
+To check the Nash Equillibrium, we'll check the optimum strategy for every possibility for opponent, Example:
+
+- If Opoenent chooses "Rock" => our optimal strategy is to use paper, or spock.
+- If Opponent chooses "Paper" => our best option is to use scissors, or Lizard.
+  and so on.
+
+In other words, there is no pure strategy, where 1 strategy rules for all, here we need a mix of strategies.
+
+Now as this game is symmetric, and every move have equal power over others.
+Then equilibrium would be to play every strategy with equal probability.
+
+There are 5 move possibilities, hence player should use every move (Rock, Paper, Scissors, Lizard, and Spock) with 1/5th probablity.
+
+This is an equilibrium state, where no player can have upper hand on other.
+
+If a player deviated from this strategy, choosing a particular move more/less than 1/5th of time (optimal), other player can counter this with winning pair strategy, resulting a better payoff, hence disturbing the equilibrium state.
