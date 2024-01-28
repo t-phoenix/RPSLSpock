@@ -1,0 +1,25 @@
+.instruction-box{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.row-box-left{
+    width: 78%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    margin-block: 1%;
+}
+
+.input-box{
+    border-width: 2px;
+    border-color: #C0DA74;
+    border-radius: 15px;
+    margin: 5px;
+    padding-inline: 10px;
+    background-color: transparent;
+    color: #F5F4F5;
+    width: 60%;
+    font-size: 24px;
+}
