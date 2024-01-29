@@ -126,10 +126,12 @@ export default function Start(){
 
             <div className="row-box-left">
                 <h2>Salt: {formatAddress(salt)}</h2>
+                <div>
                 <button onClick={generateSalt} style={{marginLeft: '20px'}}>New Salt</button>
                 <CopyToClipboard text={salt} style={{marginLeft: '20px'}}  onCopy={() => toast("Salt Copied!")}>
                     <button>Copy Salt</button>
-                </CopyToClipboard>   
+                </CopyToClipboard>  
+                </div> 
             </div>
 
             <button onClick={handlePlay} style={{marginTop: '8vh'}}>PLAY</button>
