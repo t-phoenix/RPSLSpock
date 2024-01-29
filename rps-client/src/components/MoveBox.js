@@ -10,6 +10,7 @@ export default function MoveBox({selectedMove, updateFunction}) {
     return(
         <div className="moves-container">
             <h2>Select Your Move: </h2>
+            <div className="button-list">
             {moveOptions.map((option)=>(
                         <button 
                             style={option.move == selectedMove.move ? {backgroundColor: '#065143', color: "#FBF9FF", marginLeft: '20px'}: {marginLeft: '30px'}} 
@@ -17,6 +18,7 @@ export default function MoveBox({selectedMove, updateFunction}) {
                                 {option.move}
                         </button>
                 ))}
+            </div>    
         </div>
     )
 }

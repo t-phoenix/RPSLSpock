@@ -93,7 +93,7 @@ export default function Player2(){
 
             
             <MoveBox selectedMove={selectedMove} updateFunction={setSelectedMove}/>
-            {data && <div>
+            {data && <div className="small-info">
                 <h3>Game Contract: {gameAddr}</h3>
                 <h3>Eligible Player: {player2}</h3>
                 <h2>Amount to Bet: {betAmount} ETH</h2>
@@ -102,7 +102,7 @@ export default function Player2(){
             
             <button onClick={handlePlay2}>PLAY</button>
 
-            <div style={{width: '80%', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginBlockStart: '2%' }}>
+            <div className="small-info" style={{width: '80%', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginBlockStart: '2%' }}>
                 <button onClick={handleP2Timeout}>P2 timeout</button>
                 <p>can be used by Player1, if player2 exceeded timeout (5 mins)</p>
                 <p>Beneficiary Addr: {player1}</p>

@@ -4,6 +4,35 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 3%;
+    padding: 0%;
     margin-left: 0%;
   }
+
+  
+
+
+
+
+.home-banner {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-block: 10vh;
+}
+
+.game-card{
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+@media all and (max-width: 950px){
+  .home-banner {
+    flex-direction: column;
+  }
+  .game-card {
+    flex-direction: column;
+  }
+}

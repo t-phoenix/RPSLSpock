@@ -20,8 +20,8 @@ export default function Home() {
     <div className="main-content">
       
 
-      <div style={{width: '90%', display: "flex", flexDirection: 'row', justifyContent: 'space-evenly', marginBlock: '10vh' }}>
-      <img src={rpsinfo} style={{ borderRadius: "25px" }} />
+      <div className="home-banner">
+        <img src={rpsinfo} style={{ borderRadius: "25px" }} />
         
         <div className="instruction-box">
             <h2>INSTRUCTIONS</h2>
@@ -56,8 +56,8 @@ export default function Home() {
       <h2>Game Registry</h2>
       <div style={{width: '90%',display: 'flex', flexDirection: 'column-reverse', alignItems: 'center'}}>
         {data && data.map((game, index) => (
-            <div key={game} style={{width: '80%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                <p>{index+1}'st Game : {game}</p>
+            <div key={game} className="game-card">
+                <p style={{overflow: 'clip'}}>{index+1}'st Game : {game}</p>
                 <div style={{width: '20%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                     <button onClick={() => navigate(`/player2/${game}`, {state: game})}>Player2</button>
                     <button onClick={() => navigate(`/solve/${game}`, {state: game})}>Solve</button>

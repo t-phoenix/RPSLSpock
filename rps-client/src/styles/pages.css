@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: start;
+    margin-inline: 4%;
 }
 
 .row-box-left{
@@ -22,4 +23,11 @@
     color: #F5F4F5;
     width: 60%;
     font-size: 24px;
+}
+
+
+@media all and (max-width: 950px){
+    .small-info{
+        font-size: 10px;
+    }
 }

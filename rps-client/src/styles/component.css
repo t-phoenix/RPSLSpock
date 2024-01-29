@@ -66,3 +66,19 @@
     margin-block: 2%;
   }
 
+  .button-list{
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+  }
+
+  @media all and (max-width: 950px){
+    .moves-container{
+      width: 80%;
+      flex-direction: row;
+    }
+    .button-list{
+      flex-direction: column;
+    }
+  }
+

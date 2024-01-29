@@ -87,7 +87,7 @@ export default function Solve(){
 
             <MoveBox selectedMove={selectedMove} updateFunction={setSelectedMove}/>
 
-            {data && <div>
+            {data && <div className="small-info">
                 <h3>Game Contract: {gameAddr}</h3>
                 <h3>Eligible Player: {player1Addr}</h3>
                 <h2>Stake: {stakeAmt} ETH</h2>
@@ -118,7 +118,7 @@ export default function Solve(){
             <button onClick={solveGame}>SOLVE</button>
             {transaction && <p>Transaction Hash: {transaction}</p>}
             
-            <div style={{width: '80%', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginBlockStart: '2%' }}>
+            <div className="small-info" style={{width: '80%', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginBlockStart: '2%' }}>
                 <button onClick={handleP1Timeout}>P1 timeout</button>
                 <p>can be used by Player2, if player1 exceeded timeout (5 mins)</p>
                 <p>Player 2 receives full payout</p>
