@@ -94,24 +94,14 @@ export default function Solve(){
             </div>
             }
 
-            <div style={{width: '70%',display: "flex", flexDirection: 'row', marginBlock: '2%', justifyContent: 'center'}}>
+            <div className="row-box-left" style={{justifyContent: 'center'}}>
                 <h2 >Salt: </h2>
                 <input 
                     value = {salt}
                     onChange={(e)=>{setSalt(e.target.value)}}
                     type="string"
                     placeholder="salt"
-                    style={{
-                        borderWidth: '2px',
-                        borderColor: '#C0DA74',
-                        borderRadius: '15px',
-                        margin: "5px",
-                        paddingInline: '10px' ,
-                        backgroundColor: "transparent",
-                        color: "#F5F4F5",
-                        width: "40%",
-                        fontSize: '24px'
-                    }}
+                    className="input-box"
                 />
             </div>
 

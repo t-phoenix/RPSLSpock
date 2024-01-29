@@ -13,6 +13,7 @@
     margin-block: 1%;
 }
 
+
 .input-box{
     border-width: 2px;
     border-color: #C0DA74;
@@ -26,8 +27,17 @@
 }
 
 
+
 @media all and (max-width: 950px){
     .small-info{
         font-size: 10px;
+    }
+    .row-box-left{
+        width: 90%;
+        font-size: 10px;
+    }
+    .input-box{
+        font-size: 14px;
+        width: 70%;
     }
 }
