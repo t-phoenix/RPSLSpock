@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Start from './pages/Start';
 import Player2 from './pages/Player2';
 import Solve from './pages/Solve';
+import { Toaster } from 'react-hot-toast';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/solve/:id" element={<Solve/>}/>
         </Routes>
       </div>
+      <Toaster toastOptions={{duration: 4000, style: {maxWidth: 800}}}/>
     </div>
   );
 }

@@ -10,9 +10,11 @@ import { useSigner  } from "wagmi";
 import toast, { Toaster } from 'react-hot-toast';
 import { formatAddress } from "../services/Formatter";
 import {CopyToClipboard} from 'react-copy-to-clipboard'
+import { validateAddress, validateAmount, validateMove, validateSalt } from "../services/validations";
 
 
 export default function Start(){
+    console.log("LOCAL STORAGE", localStorage)
     const signer = useSigner()
 
 
@@ -35,34 +37,48 @@ export default function Start(){
         setPublicKey(wallet.address)
     }
 
-    
-    
-      
-      
-
-
     // @dev Player1 Deploys RPS Contract and START THE GAME
     async function handlePlay(){
+        //Verify Input
+        let isValidMove = validateMove(selectedMove.id)
+        let isValidAddress = validateAddress(playerAddr)
+        let isValidAmount = validateAmount(amount);
+        let isValidSalt = validateSalt(salt);
 
+        
+        console.log("Is Valid Amount:", isValidAmount)
+
+        if(!isValidMove){
+            toast('Select a Valid Move')
+        }
+        if(!isValidAddress){
+            toast('Enter a Valid Address')
+        }
+        if(!isValidAmount){
+            toast('Enter a Valid Amount')
+        }
+        if(!isValidSalt){
+            toast('Generate a valid Salt')
+        }
+        if(isValidMove && isValidAddress && isValidAmount && isValidSalt){
         //Creating C1 Hash
         const c1Hash = ethers.utils.solidityKeccak256(["uint8", "uint256"],[selectedMove.id, publicKey]);
-        console.log("Move Hash: ", c1Hash);
+        // console.log("Move Hash: ", c1Hash);
 
-        try {
-            //Deploying RPS Contract with params and Value
-            const factory = new ethers.ContractFactory(RPS_ABI, RPS_Bytecode, signer.data);
-            // console.log("Factory Contract:", factory);
-            const contract = await factory.deploy(c1Hash, playerAddr, {value: Number(ethers.utils.parseEther(amount))});
-            // console.log("Contract Address: ", contract.address);
-            console.log("Transaction Hash:", contract.deployTransaction)
-            setContractAddr(contract.address);
-            toast(`Transaction: ${contract.deployTransaction.hash}` );
-        } catch (error) {
-            console.log("Error while Deploying RPS: ", error);
-            toast('Error: Could not deploy RPS, check connection and retry')
-        } 
+            try {
+                //Deploying RPS Contract with params and Value
+                const factory = new ethers.ContractFactory(RPS_ABI, RPS_Bytecode, signer.data);
+                const contract = await factory.deploy(c1Hash, playerAddr, {value: Number(ethers.utils.parseEther(amount))});
+                setContractAddr(contract.address);
+                toast(`Transaction: ${contract.deployTransaction.hash}` );
+            } catch (error) {
+                console.log("Error while Deploying RPS: ", error);
+                toast('Error: Could not deploy RPS, check connection and retry')
+            } 
+        }
     }
 
+    //UPDATE TO GAME REGISTRY
     async function updateRegistry(){
         const config = await prepareWriteContract({
             address: RPSRegistryAddr,
@@ -80,7 +96,10 @@ export default function Start(){
             toast("Could not add Game to Registry")
             
         }
+        //storing salt
+        localStorage.setItem(`${contractAddr}`, salt)
     }
+
 
 
     return(
@@ -106,6 +125,7 @@ export default function Start(){
                     type="string"
                     placeholder="0x2F15F9c7C7100698E10A48E3EA22b582FA4fB859"
                     className="input-box"
+                    required
                 />
             </div>
 
@@ -118,6 +138,7 @@ export default function Start(){
                         type="number"
                         placeholder="ETH"
                         className="input-box"
+                        required
 
                     />
                     <h3 style={{padding: 0}}>ETH</h3>
@@ -131,11 +152,12 @@ export default function Start(){
                 <CopyToClipboard text={salt} style={{marginLeft: '20px'}}  onCopy={() => toast("Salt Copied!")}>
                     <button>Copy Salt</button>
                 </CopyToClipboard>  
+                {/* <button onClick={storeSalt}>Store Salt</button> */}
                 </div> 
             </div>
 
             <button onClick={handlePlay} style={{marginTop: '8vh'}}>PLAY</button>
-            <Toaster toastOptions={{style: {width: '80%'}}}/>
+            <Toaster toastOptions={{style: {maxWidth: 800}}}/>
 
             <div>
                 {contractAddr !=null ? 

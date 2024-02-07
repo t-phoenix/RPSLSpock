@@ -4,19 +4,27 @@ import "../styles/pages.css";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import MoveBox from "../components/MoveBox";
-import { useContractReads, useSigner } from "wagmi";
+import { useAccount, useBlockNumber, useContractReads, useProvider, useSigner } from "wagmi";
 import { RPS_ABI } from "../contracts/Info";
 import {ethers} from 'ethers';
 import toast, { Toaster } from "react-hot-toast";
+import { validateMove, validateSalt } from "../services/validations";
+import Timer from "../components/Timer";
 
 export default function Solve(){
     const navigate = useNavigate();
+    const account = useAccount();
     const {state} = useLocation();
     const signer = useSigner();
-    const gameAddr = state;
+    const provider = useProvider();
+    const gameAddr = state.contract;
     const [selectedMove, setSelectedMove] = React.useState('')
     const [salt, setSalt] = React.useState('')
     const [transaction, setTransaction] = React.useState('')
+    const [currntTimestamp, setCurrentTimestamp] = React.useState();
+    const [timeLeft, setTimeLeft]= React.useState(0);
+
+
 
     const {data} = useContractReads({
         contracts:[
@@ -35,30 +43,75 @@ export default function Solve(){
                 abi: RPS_ABI,
                 functionName: "stake",
             },
+            {
+                address: gameAddr,
+                abi: RPS_ABI,
+                functionName: "lastAction",
+            },
         ]
     })
     
     let player1Addr;
     let player2Addr;
     let stakeAmt;
+    let lastAction;
     if(data){
         console.log("Data:", data)
         player1Addr = data[0]
         player2Addr = data[1];
         stakeAmt = ethers.utils.formatEther(Number(data[2]));
+        lastAction = Number(data[3])
     }
 
+    let currentBlock = useBlockNumber()
+    console.log('Current block: ', currentBlock.data ,currentBlock);
+    
+
+    React.useEffect(()=>{
+        getBlockTimestamp()
+        const salt = localStorage.getItem(`${gameAddr}`)
+        // console.log("Stored SALT: ", salt);
+        setSalt(salt)
+    },[])
+
+    async function getBlockTimestamp(){
+        console.log("HELLO RUNNING....", currentBlock)
+        // const provider = new ethers.getDefaultProvider();
+        const result = await provider.getBlock(currentBlock.data)
+        // console.log("CURRENT TIMESTAMP =====> ", result, result.timestamp)
+        setCurrentTimestamp(result.timestamp)
+        if(result.timestamp < lastAction+300){
+            setTimeLeft((lastAction+300) - result.timestamp)
+        }
+    }
+
+
     async function solveGame(){
-        const computedKey = ethers.utils.computeAddress(salt);
-        try {
-            const contract = new ethers.Contract(gameAddr, RPS_ABI, signer.data);
-            const result = await contract.solve(selectedMove.id, computedKey);
-            console.log("Result: ", result);
-            setTransaction(result.hash)
-            toast(`Transaction Succesful: ${result.hash} `)
-        } catch (error) {
-            console.log("Error: ", error)
-            toast("Error while Solving Game")
+        let isValidMove = validateMove(selectedMove.id);
+        let isValidSalt = validateSalt(salt);
+
+        if(account.address != player1Addr){
+            toast("Connect account is not an eligible player")
+        }
+        if (!isValidMove) {
+            toast("Select a Valid Move")
+        }
+        if(!isValidSalt){
+            toast('Enter a Valid Salt')
+        }
+
+        if(isValidMove && isValidSalt){
+            const computedKey = ethers.utils.computeAddress(salt);
+            try {
+                const contract = new ethers.Contract(gameAddr, RPS_ABI, signer.data);
+                const result = await contract.solve(selectedMove.id, computedKey);
+                console.log("Result: ", result);
+                setTransaction(result.hash)
+                toast(`Transaction Succesful: ${result.hash} `)
+            } catch (error) {
+                console.log("Error: ", error)
+                toast("Error while Solving Game")
+            }
         }
     }
 
@@ -73,7 +126,7 @@ export default function Solve(){
             toast(`Error sending Transaction`)
         }
     }
-
+    
     
 
     return(
@@ -91,6 +144,10 @@ export default function Solve(){
                 <h3>Game Contract: {gameAddr}</h3>
                 <h3>Eligible Player: {player1Addr}</h3>
                 <h2>Stake: {stakeAmt} ETH</h2>
+                <div className="small-box">
+                    <p>CONTRACT TIMESTAMP: {lastAction}</p>
+                    <p>CURRENT TIMESTAMP: {currntTimestamp}</p>
+                </div>
             </div>
             }
 
@@ -108,14 +165,14 @@ export default function Solve(){
             <button onClick={solveGame}>SOLVE</button>
             {transaction && <p>Transaction Hash: {transaction}</p>}
             
-            <div className="small-info" style={{width: '80%', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginBlockStart: '2%' }}>
+            {(lastAction+300 < currntTimestamp || timeLeft === 0) && account.address == player2Addr ? <div className="small-info" style={{width: '80%', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginBlockStart: '2%' }}>
                 <button onClick={handleP1Timeout}>P1 timeout</button>
                 <p>can be used by Player2, if player1 exceeded timeout (5 mins)</p>
                 <p>Player 2 receives full payout</p>
                 <p>Beneficiary Address: {player2Addr}</p>
-            </div>
+            </div> :<Timer initialMinute={Math.floor(timeLeft/60)} initialSeconds={timeLeft%60}/>}
 
-            <Toaster toastOptions={{style: {width: '80%'}}}/>
+
 
         </div>
     )

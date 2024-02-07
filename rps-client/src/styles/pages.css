@@ -26,6 +26,20 @@
     font-size: 24px;
 }
 
+.toast-box{
+    max-width: 90vw
+}
+
+.small-box{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 10px;
+}
+
+.inactiveButton{
+    background-color: #F5F4F5;
+}
 
 
 @media all and (max-width: 950px){
