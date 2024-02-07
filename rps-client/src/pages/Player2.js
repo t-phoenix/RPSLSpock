@@ -22,7 +22,7 @@ export default function Player2() {
   const provider = useProvider();
   const { state } = useLocation();
   const gameAddr = state.contract;
-  console.log("Signer Account:", signer);
+//   console.log("Signer Account:", signer);
 
   const [selectedMove, setSelectedMove] = React.useState("");
   const [currntTimestamp, setCurrentTimestamp] = React.useState();
@@ -59,9 +59,9 @@ export default function Player2() {
       },
     ],
   });
-  console.log("Contract Reads: ", data);
+//   console.log("Contract Reads: ", data);
   if (data) {
-    console.log("Stake Amount: ", ethers.utils.formatEther(Number(data[0])));
+    // console.log("Stake Amount: ", ethers.utils.formatEther(Number(data[0])));
     betAmount = ethers.utils.formatEther(Number(data[0]));
     player1 = data[1];
     player2 = data[2];
@@ -70,16 +70,16 @@ export default function Player2() {
   }
 
   let currentBlock = useBlockNumber();
-  console.log("Current block: ", currentBlock.data, currentBlock);
+//   console.log("Current block: ", currentBlock.data, currentBlock);
 
   React.useEffect(() => {
     getBlockTimestamp();
   });
 
   async function getBlockTimestamp() {
-    console.log("HELLO RUNNING....", currentBlock);
+    // console.log("HELLO RUNNING....", currentBlock);
     const result = await provider.getBlock(currentBlock.data);
-    console.log("CURRENT TIMESTAMP =====> ", result, result.timestamp);
+    // console.log("CURRENT TIMESTAMP =====> ", result, result.timestamp);
     setCurrentTimestamp(result.timestamp);
     if(result.timestamp < lastAction+300){
         setTimeLeft((lastAction+300) - result.timestamp)
@@ -87,9 +87,9 @@ export default function Player2() {
   }
 
   async function handlePlay2() {
-    console.log("Input Variables");
-    console.log("Selected MOve:", selectedMove.id);
-    console.log("Value: ", Number(data[0]));
+    // console.log("Input Variables");
+    // console.log("Selected MOve:", selectedMove.id);
+    // console.log("Value: ", Number(data[0]));
     let isValidMove = validateMove(selectedMove.id);
 
     if(signer == null){
@@ -151,16 +151,12 @@ export default function Player2() {
           <h3>Game Contract: {gameAddr}</h3>
           <h3>Eligible Player: {player2}</h3>
           <h2>Amount to Bet: {betAmount} ETH</h2>
-          <div className="small-box">
-            <p>CONTRACT TIMESTAMP: {lastAction}</p>
-            <p>CURRENT TIMESTAMP: {currntTimestamp}</p>
-          </div>
         </div>
       )}
 
       <button onClick={handlePlay2}>PLAY</button>
 
-      {(lastAction + 300 < currntTimestamp || timeLeft===0) && account.address === player1 ? (
+      {lastAction + 300 < currntTimestamp && account.address === player1 ? (
         <div
           className="small-info"
           style={{
@@ -175,9 +171,9 @@ export default function Player2() {
           <p>can be used by Player1, if player2 exceeded timeout (5 mins)</p>
           <p>Beneficiary Addr: {player1}</p>
         </div>
-      ) : (
-        <Timer initialMinute={Math.floor(timeLeft/60)} initialSeconds={timeLeft%60}/>
-      )}
+      ) :<></>}
+
+      {}
     </div>
   );
 }

@@ -2,10 +2,10 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const Timer = ({initialMinute,initialSeconds }) => {
+const Timer = ({initialMinute, initialSeconds }) => {
     
     const [ minutes, setMinutes ] = useState(initialMinute);
-    const [seconds, setSeconds ] =  useState(initialSeconds);
+    const [ seconds, setSeconds ] =  useState(initialSeconds);
     useEffect(()=>{
     let myInterval = setInterval(() => {
             if (seconds > 0) {

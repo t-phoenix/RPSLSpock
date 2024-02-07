@@ -7,7 +7,7 @@ import MoveBox from "../components/MoveBox";
 import { useAccount, useBlockNumber, useContractReads, useProvider, useSigner } from "wagmi";
 import { RPS_ABI } from "../contracts/Info";
 import {ethers} from 'ethers';
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { validateMove, validateSalt } from "../services/validations";
 import Timer from "../components/Timer";
 
@@ -70,15 +70,12 @@ export default function Solve(){
     React.useEffect(()=>{
         getBlockTimestamp()
         const salt = localStorage.getItem(`${gameAddr}`)
-        // console.log("Stored SALT: ", salt);
         setSalt(salt)
     },[])
 
     async function getBlockTimestamp(){
         console.log("HELLO RUNNING....", currentBlock)
-        // const provider = new ethers.getDefaultProvider();
         const result = await provider.getBlock(currentBlock.data)
-        // console.log("CURRENT TIMESTAMP =====> ", result, result.timestamp)
         setCurrentTimestamp(result.timestamp)
         if(result.timestamp < lastAction+300){
             setTimeLeft((lastAction+300) - result.timestamp)
@@ -105,11 +102,9 @@ export default function Solve(){
             try {
                 const contract = new ethers.Contract(gameAddr, RPS_ABI, signer.data);
                 const result = await contract.solve(selectedMove.id, computedKey);
-                console.log("Result: ", result);
                 setTransaction(result.hash)
                 toast(`Transaction Succesful: ${result.hash} `)
             } catch (error) {
-                console.log("Error: ", error)
                 toast("Error while Solving Game")
             }
         }
@@ -119,10 +114,8 @@ export default function Solve(){
         try {
             const contract = new ethers.Contract(gameAddr, RPS_ABI, signer.data);
             const result = await contract.j1Timeout();
-            console.log("Transaction Result: ", result)
             toast(`Transaction: ${result.hash}`);
         } catch (error) {
-            console.log("Error", error)
             toast(`Error sending Transaction`)
         }
     }
@@ -170,7 +163,7 @@ export default function Solve(){
                 <p>can be used by Player2, if player1 exceeded timeout (5 mins)</p>
                 <p>Player 2 receives full payout</p>
                 <p>Beneficiary Address: {player2Addr}</p>
-            </div> :<Timer initialMinute={Math.floor(timeLeft/60)} initialSeconds={timeLeft%60}/>}
+            </div> : <></>}
 
 
 
